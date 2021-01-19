@@ -2,16 +2,20 @@ const mongoose = require('mongoose');
 
 const Player = mongoose.model('Player',{
     fname: {
-        type: String
+        type: String,
+        required: true
     },
     lname: {
         type: String
     },
-    age: {
-        type: Number
+    username:{
+        type: String,
+        require: true,
+        unique: true
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     address: {
         type: String
@@ -20,10 +24,15 @@ const Player = mongoose.model('Player',{
         type: Number
     },
     email: {
-        type: String
+        type: String,
+        required: true,
+        unique: true
     },
     dob: {
         type: Date
+    },
+    imagepp:{
+        type: String
     }
 })
 
