@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Player = require('../models/playerModel');
+const playerAuth = require('../middleware/playerAuth');
 const { check, validationResult } = require('express-validator');
-const bcryptjs = require('bcryptjs');
+const bcryptjs = require('bcryptjs'); //for password encryption
 
-router.post('/user/register', [
+//player register
+router.post('/player/register', [
     check('fname', 'First Name is required!').not().isEmpty(),
     check('username', 'Username is required!').not().isEmpty(),
     check('password', 'Password is required!').not().isEmpty(),
@@ -29,13 +31,33 @@ router.post('/user/register', [
                 dob: dob, imagepp: imagepp
             })
             data.save()
-            res.send("Player Registered")
+            .then(function(result){
+                //success
+                res.status(201).json({message: "Player Registered Successfully"})
+            }).catch(function(e){
+                res.status(500).json({message: e})
+            })
         })
-       
     }
     else {
-        res.send(errors.array())
+        res.status(400).json(errors.array())
     }
 })
+//end of register
 
+//Player login
+router.get('/player/login', function(req, res){
+    Player.findOne({username: req.body.username})
+    .then(function(playerData){
+        if (playerData === null){
+            return res.status(401).json({message: "Authentication Failure!"})
+        }
+        bcryptjs.compare(req.body.password, playerData.password, function(err, presult){
+            if(presult!== true ){
+                return res.status(401).json({message: "Password Incorrect"})
+            }
+            console.log("Hello")
+        })
+    }).catch()
+})
 module.exports = router
