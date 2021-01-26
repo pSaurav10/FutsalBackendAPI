@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Player = mongoose.model('Player',{
     fname: {
         type: String,
-        required: true
+        require: true
     },
     lname: {
         type: String
@@ -15,7 +15,7 @@ const Player = mongoose.model('Player',{
     },
     password: {
         type: String,
-        required: true
+        require: true
     },
     address: {
         type: String
@@ -25,7 +25,7 @@ const Player = mongoose.model('Player',{
     },
     email: {
         type: String,
-        required: true,
+        require: true,
         unique: true
     },
     dob: {
