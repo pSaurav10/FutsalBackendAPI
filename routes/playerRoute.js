@@ -20,6 +20,7 @@ router.post('/player/register', [
         const lname = req.body.lname;
         const username = req.body.username;
         const password = req.body.password;
+        const userType = req.body.userType;
         const address = req.body.address;
         const phone = req.body.phone;
         const email = req.body.email;
@@ -28,7 +29,7 @@ router.post('/player/register', [
         bcryptjs.hash(password, 10, function (err, hash) {
             const data = new Player({
                 fname: fname, lname: lname, username: username,
-                password: hash, address: address, phone: phone, email: email,
+                password: hash, userType: userType, address: address, phone: phone, email: email,
                 dob: dob, imagepp: imagepp
             })
             data.save()
@@ -47,7 +48,7 @@ router.post('/player/register', [
 //end of player register
 
 //Player login
-router.get('/player/login', function (req, res) {
+router.post('/player/login', function (req, res) {
     Player.findOne({ username: req.body.username })
         .then(function (playerData) {
             if (playerData === null) {

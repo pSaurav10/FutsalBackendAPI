@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Futsal = require('../models/futsalModel');
+const playerAuth = require('../middleware/playerAuth');
 
-router.post('/futsal/register', function (req, res) {
+router.post('/futsal/register',playerAuth.verifyUser, function (req, res) {
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
