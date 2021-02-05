@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const player = require('../models/playerModel');
-const playerAuth = function(req, res, next){
+//Main Guard
+module.exports.verifyUser = function(req, res, next){
     try{
     const token = req.headers.authorization.split(" ")[1];
     const data = jwt.verify(token, "secretKey")
@@ -12,7 +13,7 @@ const playerAuth = function(req, res, next){
     })
     .catch(function(result){
         // error
-        console.log('Auth Success')
+        res.status('403').json({error:"Customer Auth Failed"})
     })
 }
 catch(e){
@@ -20,13 +21,36 @@ catch(e){
 }
 }
 
-module.exports.verifyUser = playerAuth;
 
+//Futsal Owner Guard
 module.exports.verifyOwner = function (req, res, next){
     if(!req.user){
         return res.status(401).json({message: 'Authentication Failed'})
     }
     else if(req.user.userType!== "Owner"){
+        return res.status(401).json({message: "Permission Denied"})
+    }
+    next();
+}
+
+
+//Admin Guard
+module.exports.verifyAdmin = function (req, res, next){
+    if(!req.user){
+        return res.status(401).json({message: 'Authentication Failed'})
+    }
+    else if(req.user.userType!== "Admin"){
+        return res.status(401).json({message: "Permission Denied"})
+    }
+    next();
+}
+
+//Player Guard
+module.exports.verifyPlayer = function (req, res, next){
+    if(!req.user){
+        return res.status(401).json({message: 'Authentication Failed'})
+    }
+    else if(req.user.userType!== "Player"){
         return res.status(401).json({message: "Permission Denied"})
     }
     next();

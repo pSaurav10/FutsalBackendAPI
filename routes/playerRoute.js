@@ -35,7 +35,7 @@ router.post('/player/register', [
             data.save()
                 .then(function (result) {
                     //success
-                    res.status(201).json({ message: "Player Registered Successfully" })
+                    res.status(201).json({ message: "User Registered Successfully" })
                 }).catch(function (e) {
                     res.status(500).json({ message: e })
                 })

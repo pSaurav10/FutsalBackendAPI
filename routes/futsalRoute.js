@@ -3,7 +3,7 @@ const router = express.Router();
 const Futsal = require('../models/futsalModel');
 const playerAuth = require('../middleware/playerAuth');
 
-router.post('/futsal/register',playerAuth.verifyUser, function (req, res) {
+router.post('/futsal/register',playerAuth.verifyUser, playerAuth.verifyOwner, function (req, res) {
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
@@ -14,14 +14,19 @@ router.post('/futsal/register',playerAuth.verifyUser, function (req, res) {
         image: image, approve: approve
     })
     data.save()
-    res.send("Futsal Added")
+        .then(function (result){
+            // success
+            res.status(200).json({message: "Futsal registered successfully"})
+        }).catch(function (error){
+            res.status(500).json({message: error})
+        })
 })
 
 router.delete('/futsal/delete/:id', function (req, res) {
     const id = req.params.id
     Futsal.deleteOne({ _id: id })
         .then(function (result) {
-            res.status(200).json({ message: "Futsal delted" })
+            res.status(200).json({ message: "Futsal deleted" })
         })
         .catch(function (err) {
             res.status(500).json({ message: "Cannot delete Futsal" })

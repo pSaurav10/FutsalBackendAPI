@@ -6,7 +6,8 @@ const Player = mongoose.model('Player',{
         require: true
     },
     lname: {
-        type: String
+        type: String,
+        require: true
     },
     username:{
         type: String,
@@ -19,7 +20,7 @@ const Player = mongoose.model('Player',{
     },
     userType: {
         type: String,
-        require: true
+        enum: ['Player', 'Owner', 'Admin']
     },
     address: {
         type: String
