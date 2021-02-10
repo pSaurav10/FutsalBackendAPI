@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Post = mongoose.model('Post',{
-    body:{ type:String},
+    post:{ type:String},
   username: { type:String},
   createdAt: { type:String},
   comments: [
@@ -22,3 +22,5 @@ const Post = mongoose.model('Post',{
     ref: 'users'
   }
 })
+
+module.exports = Post;

@@ -10,8 +10,8 @@ router.post('/futsal/register',[
     check('name', 'Name is required!').not().isEmpty(),
     check('address', 'Address is required!').not().isEmpty(),
     check('phoneNumber', 'Phone Number is required!').not().isEmpty(),
-    check('image', 'Futsal Image is required'),
-    check('description', 'Give a little description on your Futsal' )
+    check('image', 'Futsal Image is required').not().isEmpty(),
+    check('description', 'Give a little description on your Futsal').not().isEmpty()
 ], upload.single('image'), function (req, res) {
     const errors = validationResult(req);
     if(req.file == undefined ){
@@ -67,7 +67,7 @@ router.put('/futsal/update', upload.single('image'), function (req, res) {
     const grounds = req.body.grounds;
     const id = req.body.id;
     Futsal.updateOne({_id: id},{ name: name, address: address, phoneNumber: phoneNumber,
-        description:description, image: image, review: review, grounds:grounds,  })
+        description:description, image: image, review: review, grounds:grounds})
         .then(function (result) {
             res.status(200).json({ message: "Futsal Updated" })
         })
