@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/communityModel');
+const playerAuth = require('../middleware/playerAuth');
 const { check, validationResult } = require('express-validator');
 
 
@@ -57,3 +58,6 @@ router.put('/post/update', function (req, res) {
             res.status(500).json({ message: "Update failure" })
         })
 });
+
+
+module.exports = router;
