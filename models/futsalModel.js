@@ -13,6 +13,9 @@ const Futsal = mongoose.model('Futsal',{
         type: Number,
         require:true
     },
+    description:{
+        type: String
+    },
     image:{
         type: String,
     },
