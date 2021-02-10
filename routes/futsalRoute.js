@@ -3,19 +3,21 @@ const router = express.Router();
 const Futsal = require('../models/futsalModel');
 const playerAuth = require('../middleware/playerAuth');
 const upload = require('../middleware/imgUpload')
-router.post('/futsal/register',  upload.single('image'), function (req, res) {
-    console.log(req.file);
-    if(req.file == undefined ){
-        res.status(500).json({ message: "File type mismatch"})
-    }
+router.post('/futsal/register', function (req, res) {
+    // console.log(req.file);
+    // if(req.file == undefined ){
+    //     res.status(500).json({ message: "File type mismatch"})
+    // }
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
-    const image = req.file.path;
+    // const image = req.file.path;
+    const review = req.body.review;
+    const grounds = req.body.grounds;
     const approve = req.body.approve;
     const data = new Futsal({
         name: name, address: address, phoneNumber: phoneNumber,
-        image: image, approve: approve
+     review: review, grounds: grounds , approve: approve
     })
     data.save()
         .then(function (result) {

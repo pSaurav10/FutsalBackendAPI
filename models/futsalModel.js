@@ -16,6 +16,18 @@ const Futsal = mongoose.model('Futsal',{
     image:{
         type: String,
     },
+    review:[{
+        rating: Number,
+        comment: String
+    }],
+    grounds:[{
+        name: String,
+        schedule: [{
+                name: String, // weekdays or weekends
+                time: String,
+                price: String,
+        }]
+    }],
     approve:{
         type: Boolean
     }
