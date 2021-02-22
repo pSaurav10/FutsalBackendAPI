@@ -8,7 +8,7 @@ var app = express();
 app.use(express.json())
 app.use(player_route)
 app.use(futsalRoute)
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 
 

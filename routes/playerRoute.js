@@ -6,6 +6,9 @@ const { check, validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs'); //for password encryption
 const jwt = require('jsonwebtoken');
 
+const bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 //player register
 router.post('/player/register', [
     check('fname', 'First Name is required!').not().isEmpty(),
@@ -35,7 +38,7 @@ router.post('/player/register', [
             data.save()
                 .then(function (result) {
                     //success
-                    res.status(201).json({ message: "User Registered Successfully" })
+                    res.status(201).json({ success: true, message: "User Registered Successfully" })
                 }).catch(function (e) {
                     res.status(500).json({ message: e })
                 })
@@ -48,22 +51,25 @@ router.post('/player/register', [
 //end of player register
 
 //Player login
-router.post('/player/login', function (req, res) {
+router.post('/player/login',urlencodedParser, function (req, res) {
+
     Player.findOne({ username: req.body.username })
         .then(function (playerData) {
             if (playerData === null) {
-                return res.status(401).json({ message: "Username Incorrect!" })
+                return res.status(401).json({ success:false,message: "Username Incorrect!" })
             }
             bcryptjs.compare(req.body.password, playerData.password, function (err, presult) {
                 if (presult === false) {
-                    return res.status(401).json({ message: "Password Incorrect" })
+                    return res.status(401).json({success:false, message: "Password Incorrect" })
                 }
                 //token
                 const token = jwt.sign({uid: playerData._id}, 'secretKey');
-                res.status(200).json({message: "Authentication Success", token: token})
+                res.status(200).json({success:true, token:token, message: "Authentication Success"})
             
             })
-        }).catch()
+        }).catch(function (e){
+            res.status(500).json({message:e})
+        })
 })
 //end of player login
 
