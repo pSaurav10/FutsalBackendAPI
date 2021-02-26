@@ -6,8 +6,6 @@ const { check, validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs'); //for password encryption
 const jwt = require('jsonwebtoken');
 
-const bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //player register
 router.post('/player/register', [
@@ -51,7 +49,7 @@ router.post('/player/register', [
 //end of player register
 
 //Player login
-router.post('/player/login',urlencodedParser, function (req, res) {
+router.post('/player/login', function (req, res) {
 
     Player.findOne({ username: req.body.username })
         .then(function (playerData) {
@@ -73,5 +71,12 @@ router.post('/player/login',urlencodedParser, function (req, res) {
 })
 //end of player login
 
+
+// router.get('/player/fetch',function(req,res){
+//     Player.find().then(function(playerData){
+//     res.send(playerData)
+//     })
+
+// })
 
 module.exports = router

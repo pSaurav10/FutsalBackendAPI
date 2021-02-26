@@ -38,6 +38,7 @@ module.exports.verifyOwner = function (req, res, next){
 //Admin Guard
 module.exports.verifyAdmin = function (req, res, next){
     if(!req.user){
+        
         return res.status(401).json({message: 'Authentication Failed'})
     }
     else if(req.user.userType!== "Admin"){

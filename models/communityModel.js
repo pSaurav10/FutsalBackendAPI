@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const users = require('../models/playerModel');
 
 const Post = mongoose.model('Post',{
     post:{ type:String},
@@ -18,7 +19,7 @@ const Post = mongoose.model('Post',{
     }
   ],
   user: {
-    type: model.Types.ObjectId,
+    type: String,
     ref: 'users'
   }
 })

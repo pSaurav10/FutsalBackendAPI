@@ -9,7 +9,9 @@ const { check, validationResult } = require('express-validator');
 router.post('/post/add', [
     check('post', 'You cannot add empty post').not().isEmpty()
 ], function(req,res){
+    const errors = validationResult(req);
     if (errors.isEmpty()){
+        
         const post = req.body.post;
         const username = req.body.username;
         const createdAt = new Date().toISOString();
@@ -17,6 +19,7 @@ router.post('/post/add', [
         const likes = req.body.likes;
         const data = new Post({post: post, username: username,
         createdAt: createdAt, comments: comments, likes: likes })
+        console.log(data)
         data.save().then(function(result){
             res.status(200).json({message: "Post added Successfully"})   
         }).catch(function(error){

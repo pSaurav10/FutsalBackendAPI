@@ -12,6 +12,7 @@ const Player = mongoose.model('Player',{
     username:{
         type: String,
         require: true,
+        unique: true
     },
     password: {
         type: String,

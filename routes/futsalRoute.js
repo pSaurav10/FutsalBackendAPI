@@ -10,19 +10,18 @@ router.post('/futsal/register',[
     check('name', 'Name is required!').not().isEmpty(),
     check('address', 'Address is required!').not().isEmpty(),
     check('phoneNumber', 'Phone Number is required!').not().isEmpty(),
-    check('image', 'Futsal Image is required').not().isEmpty(),
     check('description', 'Give a little description on your Futsal').not().isEmpty()
-], upload.single('image'), function (req, res) {
+], playerAuth.verifyUser, playerAuth.verifyOwner, function (req, res) {
     const errors = validationResult(req);
-    if(req.file == undefined ){
-        res.status(500).json({ message: "File type mismatch"})
-    }
+    // if(req.file == undefined ){
+    //     res.status(500).json({ message: "File type mismatch"})
+    // }
     if(errors.isEmpty()){
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
     const description = req.body.description;
-    const image = req.file.path;
+    const image = req.body.image;
     const review = req.body.review;
     const grounds = req.body.grounds;
     const approve = req.body.approve;
@@ -41,6 +40,20 @@ router.post('/futsal/register',[
     else{
         res.status(500).json(errors.array())
     }
+})
+
+router.get('/futsal/fetch',function(req,res){
+    Futsal.find().then(function(futsalData){
+    res.status(200).json({success: true, count: futsalData.length, data: futsalData});
+    })
+})
+
+router.get('/futsal/fetch/:id', function(req,res){
+    const id = req.params.id
+    Futsal.findOne({_id:id})
+    .then(function (futsalData){
+        res.status(200).json({success: true, data: futsalData});
+    })
 })
 
 // Futsal Delete
