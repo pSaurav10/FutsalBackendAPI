@@ -6,22 +6,17 @@ const { check, validationResult } = require('express-validator');
 const upload = require('../middleware/imgUpload')
 
 // Futsal Register
-router.post('/futsal/register',[
-    check('name', 'Name is required!').not().isEmpty(),
-    check('address', 'Address is required!').not().isEmpty(),
-    check('phoneNumber', 'Phone Number is required!').not().isEmpty(),
-    check('description', 'Give a little description on your Futsal').not().isEmpty()
-], playerAuth.verifyUser, playerAuth.verifyOwner, function (req, res) {
-    const errors = validationResult(req);
-    // if(req.file == undefined ){
-    //     res.status(500).json({ message: "File type mismatch"})
-    // }
-    if(errors.isEmpty()){
+router.post('/futsal/register', playerAuth.verifyUser, playerAuth.verifyOwner,upload.single('image'), function (req, res) {
+    // const errors = validationResult(req);
+    if(req.file == undefined ){
+        res.status(500).json({ message: "File type mismatch"})
+    }
+    // if(errors.isEmpty()){
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
     const description = req.body.description;
-    const image = req.body.image;
+    const image = req.file.filename;
     const review = req.body.review;
     const grounds = req.body.grounds;
     const approve = req.body.approve;
@@ -36,10 +31,10 @@ router.post('/futsal/register',[
         }).catch(function (error) {
             res.status(500).json({ message: error })
         })
-    }
-    else{
-        res.status(500).json(errors.array())
-    }
+    // }
+    // else{
+    //     res.status(500).json(errors.array())
+    // }
 })
 
 router.get('/futsal/fetch',function(req,res){

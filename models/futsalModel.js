@@ -20,8 +20,7 @@ const Futsal = mongoose.model('Futsal',{
         type: String,
     },
     review:[{
-        rating: Number,
-        comment: String
+        type: String
     }],
     grounds:[{
         name: String,
