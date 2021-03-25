@@ -17,19 +17,14 @@ const Futsal = mongoose.model('Futsal',{
         type: String
     },
     image:{
-        type: String,
+        type: String
     },
     review:[{
         type: String
     }],
-    grounds:[{
-        name: String,
-        schedule: [{
-                name: String, // weekdays or weekends
-                time: String,
-                price: String,
-        }]
-    }],
+    grounds:{
+        type: Number
+    },
     approve:{
         type: Boolean
     }

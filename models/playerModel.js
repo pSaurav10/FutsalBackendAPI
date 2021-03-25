@@ -18,10 +18,6 @@ const Player = mongoose.model('Player',{
         type: String,
         require: true
     },
-    userType: {
-        type: String,
-        enum: ['Player', 'Owner', 'Admin']
-    },
     address: {
         type: String
     },

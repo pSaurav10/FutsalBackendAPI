@@ -6,20 +6,26 @@ const { check, validationResult } = require('express-validator');
 const upload = require('../middleware/imgUpload')
 
 //Event Add
-router.post('/event/add', upload.single('image'), function (req, res){
+router.post('/event/add',playerAuth.verifyUser, upload.single('image'), function (req, res){
+    if(req.file == undefined ){
+        res.status(500).json({ message: "File type mismatch"})
+    }
     const name = req.body.name;
     const description = req.body.description;
-    const image = req.file.path;
+    const image = req.file.filename;
     const date = req.body.date;
+    const fee = req.body.fee;
+    const phone = req.body.phone;
     const location = req.body.location;
+    const approve = req.body.approve;
     const data = new Event({
         name: name, description: description, image: image, date: date,
-        location: location
+        fee: fee, phone: phone, location: location, approve: approve
     })
     data.save()
     .then(function (result) {
         // success
-        res.status(200).json({ message: "Futsal registered successfully" })
+        res.status(200).json({ message: "Event registered successfully" })
     }).catch(function (error) {
         res.status(500).json({ message: error })
     })
@@ -36,6 +42,12 @@ router.delete('/event/delete/:id', function (req, res) {
             res.status(500).json({ message: "Cannot delete Event" })
         })
 });
+
+router.get('/event/fetch',function(req,res){
+    Event.find().then(function(Eventdata){
+    res.status(200).json({ data: Eventdata});
+    })
+})
 
 // Event Update
 router.put('/event/update', upload.single('image'), function (req, res) {

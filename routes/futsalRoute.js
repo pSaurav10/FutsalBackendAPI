@@ -39,7 +39,16 @@ router.post('/futsal/register', playerAuth.verifyUser, playerAuth.verifyOwner,up
 
 router.get('/futsal/fetch',function(req,res){
     Futsal.find().then(function(futsalData){
-    res.status(200).json({success: true, count: futsalData.length, data: futsalData});
+    res.status(200).json({ data: futsalData});
+    })
+})
+
+//Fetch Single Futsal
+router.get('/futsal/fetch/:id', function (req, res) {
+    const id = req.params.id
+    Futsal.findOne({_id:id})
+    .then(function (Futsaldata) {
+        res.status(200).json({ success: true, data: Futsaldata });
     })
 })
 

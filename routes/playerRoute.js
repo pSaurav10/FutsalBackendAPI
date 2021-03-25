@@ -5,7 +5,7 @@ const playerAuth = require('../middleware/playerAuth');
 const { check, validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs'); //for password encryption
 const jwt = require('jsonwebtoken');
-
+const upload = require('../middleware/imgUpload')
 
 //player register
 router.post('/player/register', [
@@ -14,7 +14,7 @@ router.post('/player/register', [
     check('password', 'Password is required!').not().isEmpty(),
     check('email', 'Email is required!').not().isEmpty(),
     check('email', 'It is not valid Email!').isEmail(),
-], function (req, res) {
+],function (req, res) {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
         const fname = req.body.fname;
@@ -26,12 +26,11 @@ router.post('/player/register', [
         const phone = req.body.phone;
         const email = req.body.email;
         const dob = req.body.dob;
-        const imagepp = req.body.imagepp;
         bcryptjs.hash(password, 10, function (err, hash) {
             const data = new Player({
                 fname: fname, lname: lname, username: username,
                 password: hash, userType: userType, address: address, phone: phone, email: email,
-                dob: dob, imagepp: imagepp
+                dob: dob
             })
             data.save()
                 .then(function (result) {
@@ -62,7 +61,7 @@ router.post('/player/login', function (req, res) {
                 }
                 //token
                 const token = jwt.sign({uid: playerData._id}, 'secretKey');
-                res.status(200).json({success:true, token:token, message: "Authentication Success"})
+                res.status(200).json({success:true, token:token, data:playerData ,message: "Authentication Success"})
             
             })
         }).catch(function (e){
@@ -72,11 +71,11 @@ router.post('/player/login', function (req, res) {
 //end of player login
 
 
-// router.get('/player/fetch',function(req,res){
-//     Player.find().then(function(playerData){
-//     res.send(playerData)
-//     })
+router.get('/player/fetch',function(req,res){
+    Player.findByID(req.user.id).then(function(playerData){
+    res.send(playerData)
+    })
 
-// })
+})
 
 module.exports = router
