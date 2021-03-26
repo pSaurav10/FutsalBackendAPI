@@ -49,6 +49,14 @@ router.get('/event/fetch',function(req,res){
     })
 })
 
+router.get('/event/fetch/:id', function (req, res) {
+    const id = req.params.id
+    Event.findOne({_id:id})
+    .then(function (eventdata) {
+        res.status(200).json({ success: true, data: eventdata });
+    })
+})
+
 // Event Update
 router.put('/event/update', upload.single('image'), function (req, res) {
     const name = req.body.name;

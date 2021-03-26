@@ -19,9 +19,6 @@ const Futsal = mongoose.model('Futsal',{
     image:{
         type: String
     },
-    review:[{
-        type: String
-    }],
     grounds:{
         type: Number
     },

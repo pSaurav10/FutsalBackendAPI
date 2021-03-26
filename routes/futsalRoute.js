@@ -17,12 +17,11 @@ router.post('/futsal/register', playerAuth.verifyUser, playerAuth.verifyOwner,up
     const phoneNumber = req.body.phoneNumber;
     const description = req.body.description;
     const image = req.file.filename;
-    const review = req.body.review;
     const grounds = req.body.grounds;
     const approve = req.body.approve;
     const data = new Futsal({
         name: name, address: address, phoneNumber: phoneNumber, description: description,
-        image: image, review: review, grounds: grounds , approve: approve
+        image: image, grounds: grounds , approve: approve
     })
     data.save()
         .then(function (result) {
@@ -47,8 +46,8 @@ router.get('/futsal/fetch',function(req,res){
 router.get('/futsal/fetch/:id', function (req, res) {
     const id = req.params.id
     Futsal.findOne({_id:id})
-    .then(function (Futsaldata) {
-        res.status(200).json({ success: true, data: Futsaldata });
+    .then(function (futsaldata) {
+        res.status(200).json({ success: true, data: futsaldata });
     })
 })
 
