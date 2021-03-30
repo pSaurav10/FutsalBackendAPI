@@ -71,8 +71,8 @@ router.post('/player/login', function (req, res) {
 //end of player login
 
 
-router.get('/player/fetch',function(req,res){
-    Player.findByID(req.user.id).then(function(playerData){
+router.get('/profile', playerAuth.verifyUser ,function(req,res){
+    Player.findOne({_id: req.user._id}).then(function(playerData){
     res.send(playerData)
     })
 

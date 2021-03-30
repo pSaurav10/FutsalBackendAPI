@@ -22,6 +22,12 @@ const Futsal = mongoose.model('Futsal',{
     grounds:{
         type: Number
     },
+    fee:{
+        type: String
+    },
+    userid:{
+        type:String
+    },
     approve:{
         type: Boolean
     }

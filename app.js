@@ -18,8 +18,4 @@ app.use(futsalRoute);
 app.use(eventRoute);
 app.use(communityRoute);
 
-
-
-
-
 app.listen(8080);
