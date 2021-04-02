@@ -53,13 +53,7 @@ router.get('/futsal/fetch/:id', function (req, res) {
     })
 })
 
-router.get('/futsal/fetch/:id', function(req,res){
-    const id = req.params.id
-    Futsal.findOne({_id:id})
-    .then(function (futsalData){
-        res.status(200).json({success: true, data: futsalData});
-    })
-})
+
 
 // Futsal Delete
 router.delete('/futsal/delete/:id', function (req, res) {

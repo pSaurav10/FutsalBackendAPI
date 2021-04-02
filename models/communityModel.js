@@ -12,12 +12,6 @@ const Post = mongoose.model('Post',{
       createdAt: String
     }
   ],
-  likes: [
-    {
-      username: String,
-      createdAt: String
-    }
-  ],
   user: {
     type: String,
     ref: 'users'
