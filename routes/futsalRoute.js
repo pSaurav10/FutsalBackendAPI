@@ -6,10 +6,10 @@ const { check, validationResult } = require('express-validator');
 const upload = require('../middleware/imgUpload')
 
 // Futsal Register
-router.post('/futsal/register',upload.single('image'), function (req, res) {
+router.post('/futsal/register', upload.single('image'), function (req, res) {
     // const errors = validationResult(req);
-    if(req.file == undefined ){
-        res.status(500).json({ message: "File type mismatch"})
+    if (req.file == undefined) {
+        res.status(500).json({ message: "File type mismatch" })
     }
     // if(errors.isEmpty()){
     const name = req.body.name;
@@ -23,7 +23,7 @@ router.post('/futsal/register',upload.single('image'), function (req, res) {
     const approve = req.body.approve;
     const data = new Futsal({
         name: name, address: address, phoneNumber: phoneNumber, description: description,
-        image: image, grounds: grounds, fee: fee , userid:userid, approve: approve
+        image: image, grounds: grounds, fee: fee, userid: userid, approve: approve
     })
     data.save()
         .then(function (result) {
@@ -38,19 +38,27 @@ router.post('/futsal/register',upload.single('image'), function (req, res) {
     // }
 })
 
-router.get('/futsal/fetch',function(req,res){
-    Futsal.find().then(function(futsalData){
-    res.status(200).json({ data: futsalData});
-    })
+router.get('/futsal/fetch', function (req, res) {
+    Futsal.find()
+        .then(function (futsalData) {
+            res.status(200).json({ data: futsalData });
+        })
+        .catch(function (error) {
+            res.status(500).json({ message: error });
+        })
 })
 
 //Fetch Single Futsal
 router.get('/futsal/fetch/:id', function (req, res) {
     const id = req.params.id
-    Futsal.findOne({_id:id})
-    .then(function (futsaldata) {
-        res.status(200).json({ success: true, data: futsaldata });
-    })
+    Futsal.findOne({ _id: id })
+        .then(function (futsaldata) {
+            res.status(200).json({ success: true, data: futsaldata });
+        })
+        .catch(function (error) {
+            res.status(500).json({ message: error })
+            console.log(error)
+        })
 })
 
 
@@ -78,8 +86,10 @@ router.put('/futsal/update', upload.single('image'), function (req, res) {
     const review = req.body.review;
     const grounds = req.body.grounds;
     const id = req.body.id;
-    Futsal.updateOne({_id: id},{ name: name, address: address, phoneNumber: phoneNumber,
-        description:description, image: image, review: review, grounds:grounds})
+    Futsal.updateOne({ _id: id }, {
+        name: name, address: address, phoneNumber: phoneNumber,
+        description: description, image: image, review: review, grounds: grounds
+    })
         .then(function (result) {
             res.status(200).json({ message: "Futsal Updated" })
         })
