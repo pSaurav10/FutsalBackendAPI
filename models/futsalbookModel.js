@@ -1,11 +1,13 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const FutsalBook = mongoose.model('FutsalBook',{
- FutsalName: {type: String},
- Date: {type:Date},
- Time: {type:String},
- UserName: {type:String},
- UserId: {type:String}
+ futsalname: {type: String},
+ futsalid:{type: String},
+ date: {type:Date},
+ time: {type:String},
+ username: {type:String},
+ userid: {type:String}
+ 
 })
 
 module.exports = FutsalBook;
