@@ -6,19 +6,19 @@ const { check, validationResult } = require('express-validator');
 
 
 //Community Post Add
-router.post('/post/add', [
+router.post('/post/add', playerAuth.verifyUser, [
     check('post', 'You cannot add empty post').not().isEmpty()
 ], function(req,res){
     const errors = validationResult(req);
     if (errors.isEmpty()){
         
         const post = req.body.post;
-        const username = req.body.username;
+        const username = req.user.username;
+        const userimage = req.user.imagepp;
         const createdAt = new Date().toISOString();
-        const comments = req.body.comments;
-        const likes = req.body.likes;
-        const data = new Post({post: post, username: username,
-        createdAt: createdAt, comments: comments, likes: likes })
+        const userid = req.user._id;
+        const data = new Post({post: post, username: username, userimage: userimage,
+        createdAt: createdAt, userid:userid})
         console.log(data)
         data.save().then(function(result){
             res.status(200).json({message: "Post added Successfully"})   
@@ -31,6 +31,9 @@ router.post('/post/add', [
         res.status(500).json(errors.array())    
     }
 });
+
+//Post comment add
+// router.post('/post/:id')
 
 //Community Post Delete
 router.delete('/post/delete/:id', function (req, res) {

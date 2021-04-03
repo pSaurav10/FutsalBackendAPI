@@ -6,10 +6,11 @@ const { check, validationResult } = require('express-validator');
 const upload = require('../middleware/imgUpload')
 
 //Event Add
-router.post('/event/add',playerAuth.verifyUser, upload.single('image'), function (req, res){
+router.post('/event/add', upload.single('image'), function (req, res){
     if(req.file == undefined ){
         res.status(500).json({ message: "File type mismatch"})
     }
+    console.log(req.body)
     const name = req.body.name;
     const description = req.body.description;
     const image = req.file.filename;
@@ -17,10 +18,11 @@ router.post('/event/add',playerAuth.verifyUser, upload.single('image'), function
     const fee = req.body.fee;
     const phone = req.body.phone;
     const location = req.body.location;
+    const userid = req.body.userid;
     const approve = req.body.approve;
     const data = new Event({
         name: name, description: description, image: image, date: date,
-        fee: fee, phone: phone, location: location, approve: approve
+        fee: fee, phone: phone, location: location, userid:userid, approve: approve
     })
     data.save()
     .then(function (result) {

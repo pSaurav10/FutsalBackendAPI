@@ -4,11 +4,14 @@ const player = require('../models/playerModel');
 module.exports.verifyUser = function(req, res, next){
     try{
     const token = req.headers.authorization.split(" ")[1];
+    console.log("Token"+token)
     const data = jwt.verify(token, "secretKey")
+    console.log(data)
     player.findOne({_id: data.uid})
     .then(function(result){
         // success
         req.user = result;
+        console.log(req.user);
         next();
     })
     .catch(function(result){

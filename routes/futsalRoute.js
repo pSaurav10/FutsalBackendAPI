@@ -6,7 +6,7 @@ const { check, validationResult } = require('express-validator');
 const upload = require('../middleware/imgUpload')
 
 // Futsal Register
-router.post('/futsal/register', upload.single('image'), function (req, res) {
+router.post('/futsal/register', playerAuth.verifyUser, upload.single('image'), function (req, res) {
     // const errors = validationResult(req);
     if (req.file == undefined) {
         res.status(500).json({ message: "File type mismatch" })

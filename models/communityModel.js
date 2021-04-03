@@ -1,21 +1,20 @@
 const mongoose = require('mongoose');
-const users = require('../models/playerModel');
 
 const Post = mongoose.model('Post',{
-    post:{ type:String},
+  post:{ type:String},
   username: { type:String},
+  userimage:{type:String},
   createdAt: { type:String},
+  userid:{type:String},
   comments: [
     {
-      body: String,
-      username: String,
-      createdAt: String
+      body: {type:String},
+      username: {type:String},
+      userimage: {type:String},
+      createdAt: {type:String},
+      userid:{type:String}
     }
-  ],
-  user: {
-    type: String,
-    ref: 'users'
-  }
+  ]
 })
 
 module.exports = Post;
