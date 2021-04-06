@@ -14,7 +14,7 @@ router.post('/player/register', [
     check('password', 'Password is required!').not().isEmpty(),
     check('email', 'Email is required!').not().isEmpty(),
     check('email', 'It is not valid Email!').isEmail(),
-],function (req, res) {
+], function (req, res) {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
         const fname = req.body.fname;
@@ -53,27 +53,28 @@ router.post('/player/login', function (req, res) {
     Player.findOne({ username: req.body.username })
         .then(function (playerData) {
             if (playerData === null) {
-                return res.status(401).json({ success:false,message: "Username Incorrect!" })
+                return res.status(401).json({ success: false, message: "Username Incorrect!" })
             }
             bcryptjs.compare(req.body.password, playerData.password, function (err, presult) {
                 if (presult === false) {
-                    return res.status(401).json({success:false, message: "Password Incorrect" })
+                    return res.status(401).json({ success: false, message: "Password Incorrect" })
                 }
                 //token
-                const token = jwt.sign({uid: playerData._id}, 'secretKey');
-                res.status(200).json({success:true, token:token, data:playerData ,message: "Authentication Success"})
-            
+                const token = jwt.sign({ uid: playerData._id }, 'secretKey');
+                res.status(200).json({ success: true, token: token, data: playerData, message: "Authentication Success" })
+
             })
-        }).catch(function (e){
-            res.status(500).json({message:e})
+        }).catch(function (e) {
+            res.status(500).json({ message: e })
         })
 })
 //end of player login
 
 
-router.get('/profile', playerAuth.verifyUser ,function(req,res){
-    Player.findOne({_id: req.user._id}).then(function(playerData){
-    res.send(playerData)
+router.get('/profile', playerAuth.verifyUser, function (req, res) {
+    Player.findOne({ _id: req.user._id })
+    .then(function (playerData) {
+        res.status(200).json({data:playerData})
     })
 
 })

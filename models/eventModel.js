@@ -8,7 +8,8 @@ const Event = mongoose.model('Event',{
     fee: {type: String},
     phone:{type: Number},
     location:{type:String},
-    approve:{type:Boolean}
+    approve:{type:Boolean},
+    userid:{type:String}
 });
 
 module.exports = Event;

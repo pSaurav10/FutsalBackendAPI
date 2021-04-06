@@ -32,7 +32,8 @@ const Player = mongoose.model('Player',{
         type: Date
     },
     imagepp:{
-        type: String
+        type: String,
+        default: "userpp.png"
     }
 })
 

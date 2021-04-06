@@ -48,20 +48,29 @@ router.get('/futsal/fetch', function (req, res) {
         })
 })
 
+router.get('/futsal/fetchuser', playerAuth.verifyUser, function(req,res){
+    Futsal.find({userid: req.user._id})
+    .then(function (futsaldata){
+        res.status(200).json({ success: true, data: futsaldata})
+    })
+    .catch(function (error){
+        res.status(500).json({message: error})
+    })
+})
+
 //Fetch Single Futsal
 router.get('/futsal/fetch/:id', function (req, res) {
     const id = req.params.id
     Futsal.findOne({ _id: id })
         .then(function (futsaldata) {
             res.status(200).json({ success: true, data: futsaldata });
+            console.log(futsaldata)
         })
         .catch(function (error) {
             res.status(500).json({ message: error })
-            console.log(error)
+            
         })
 })
-
-
 
 // Futsal Delete
 router.delete('/futsal/delete/:id', function (req, res) {
@@ -77,18 +86,17 @@ router.delete('/futsal/delete/:id', function (req, res) {
 
 
 // Futsal update
-router.put('/futsal/update', upload.single('image'), function (req, res) {
+router.put('/futsal/update',  playerAuth.verifyUser, function (req, res) {
     const name = req.body.name;
     const address = req.body.address;
     const phoneNumber = req.body.phoneNumber;
     const description = req.body.description;
-    const image = req.file.path;
-    const review = req.body.review;
     const grounds = req.body.grounds;
+    const fee = req.body.fee;
     const id = req.body.id;
     Futsal.updateOne({ _id: id }, {
         name: name, address: address, phoneNumber: phoneNumber,
-        description: description, image: image, review: review, grounds: grounds
+        description: description, grounds: grounds, fee: fee
     })
         .then(function (result) {
             res.status(200).json({ message: "Futsal Updated" })
