@@ -8,11 +8,11 @@ const Post = mongoose.model('Post',{
   userid:{type:String},
   comments: [
     {
-      body: {type:String},
-      username: {type:String},
-      userimage: {type:String},
-      createdAt: {type:String},
-      userid:{type:String}
+      comment: {type:String},
+      cusername: {type:String},
+      cuserimage: {type:String},
+      ccreatedAt: {type:String},
+      cuserid:{type:String}
     }
   ]
 })

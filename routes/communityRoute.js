@@ -15,11 +15,12 @@ router.post('/post/add', playerAuth.verifyUser, [
         const post = req.body.post;
         const username = req.user.username;
         const userimage = req.user.imagepp;
-        const createdAt = new Date().toISOString();
+        const createdAt = new Date().toDateString();
         const userid = req.user._id;
+
         const data = new Post({
             post: post, username: username, userimage: userimage,
-            createdAt: createdAt, userid: userid
+            createdAt: createdAt, userid: userid, comments: comments
         })
         data.save().then(function (result) {
             res.status(200).json({ message: "Post added Successfully" })
@@ -34,7 +35,30 @@ router.post('/post/add', playerAuth.verifyUser, [
 });
 
 //Post comment add
-// router.post('/post/:id')
+router.put('/comment/add', playerAuth.verifyUser, function (req, res) {
+    
+    const id = req.body.id
+    const comment = req.body.comment;
+    const cusername = req.user.username;
+    const cuserid = req.user._id;
+    const cuserimage = req.user.imagepp;
+    const ccreatedAt = new Date().toDateString();
+    const query = {_id: id}
+    const comments = [{
+        comment:comment, cusername: cusername, cuserid: cuserid,
+        cuserimage:cuserimage, ccreatedAt:ccreatedAt
+    }]
+    const updateComment = {
+        $push: {comments: comments}
+    }
+    Post.findByIdAndUpdate(query, updateComment)
+        .then(function (result) {
+            res.status(200).json({ message: "Comment Added" })
+        })
+        .catch(function (err) {
+            res.status(500).json({ message: "Comment Add failure" })
+        })
+})
 
 
 router.get('/post/fetch', function (req, res) {
@@ -76,20 +100,16 @@ router.delete('/post/delete/:id', function (req, res) {
 //Community post update
 router.put('/post/update', function (req, res) {
     const post = req.body.post;
-    const username = req.body.username;
     const createdAt = new Date().toISOString();
-    const comments = req.body.comments;
-    const likes = req.body.likes;
     const id = req.body.id;
     Post.updateOne({ _id: id }, {
-        post: post, username: username,
-        createdAt: createdAt, comments: comments, likes: likes
+        post: post, createdAt: createdAt
     })
         .then(function (result) {
-            res.status(200).json({ message: "Futsal Updated" })
+            res.status(200).json({ message: "Post Updated" })
         })
         .catch(function (err) {
-            res.status(500).json({ message: "Update failure" })
+            res.status(500).json({ message: "Post Update failure" })
         })
 });
 
