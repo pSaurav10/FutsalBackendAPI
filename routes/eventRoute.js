@@ -63,7 +63,6 @@ router.get('/event/fetchuser', playerAuth.verifyUser, function(req,res){
     Event.find({userid: req.user._id})
     .then(function (eventdata){
         res.status(200).json({ success: true, data: eventdata})
-        console.log(eventdata)
     })
     .catch(function (error){
         res.status(500).json({message: error})

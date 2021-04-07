@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const FutsalBook = require('../models/futsalbookModel');
-const bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const playerAuth = require('../middleware/playerAuth');
 
 router.post('/futsalbook', function (req, res){
     const body = req.body;
@@ -26,9 +25,9 @@ router.post('/futsalbook', function (req, res){
 })
 
 
-router.post('/futsalbookget/:id', function (req, res){
-    const id = req.params.id
-    FutsalBook.findOne({ _id: id })
+router.get('/futsalbookget', playerAuth.verifyUser, function (req, res){
+    const id = req.user._id
+    FutsalBook.find({ userid: id })
         .then(function (bookdata) {
             res.status(200).json({ success: true, data: bookdata });
         })
