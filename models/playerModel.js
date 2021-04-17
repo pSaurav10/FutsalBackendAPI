@@ -28,8 +28,8 @@ const Player = mongoose.model('Player',{
         type: String,
         require: true
     },
-    dob: {
-        type: Date
+    age: {
+        type: String,
     },
     imagepp:{
         type: String,

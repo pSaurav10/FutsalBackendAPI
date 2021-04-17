@@ -41,10 +41,10 @@ router.post('/futsal/register', playerAuth.verifyUser, upload.single('image'), f
 router.get('/futsal/fetch', function (req, res) {
     Futsal.find()
         .then(function (futsalData) {
-            res.status(200).json({ data: futsalData });
+            res.status(200).json({ success:true, data: futsalData });
         })
         .catch(function (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ success:false, message: error });
         })
 })
 

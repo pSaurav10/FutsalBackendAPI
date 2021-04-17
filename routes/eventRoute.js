@@ -45,7 +45,7 @@ router.delete('/event/delete/:id', playerAuth.verifyUser, function (req, res) {
         })
 });
 
-router.get('/event/fetch',function(req,res){
+router.get('/event/fetch', playerAuth.verifyUser, function(req,res){
     Event.find().then(function(Eventdata){
     res.status(200).json({ data: Eventdata});
     })

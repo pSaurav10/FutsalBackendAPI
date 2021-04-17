@@ -12,6 +12,7 @@ router.post('/post/add', playerAuth.verifyUser, [
     const errors = validationResult(req);
     if (errors.isEmpty()) {
 
+        console.log(req.body)
         const post = req.body.post;
         const username = req.user.username;
         const userimage = req.user.imagepp;
@@ -20,10 +21,10 @@ router.post('/post/add', playerAuth.verifyUser, [
 
         const data = new Post({
             post: post, username: username, userimage: userimage,
-            createdAt: createdAt, userid: userid, comments: comments
+            createdAt: createdAt, userid: userid
         })
         data.save().then(function (result) {
-            res.status(200).json({ message: "Post added Successfully" })
+            res.status(200).json({success:true,  message: "Post added Successfully" })
         }).catch(function (error) {
             res.status(500).json({
                 message: error
@@ -53,18 +54,18 @@ router.put('/comment/add', playerAuth.verifyUser, function (req, res) {
     }
     Post.findByIdAndUpdate(query, updateComment)
         .then(function (result) {
-            res.status(200).json({ message: "Comment Added" })
+            res.status(200).json({success: true, message: "Comment Added" })
         })
         .catch(function (err) {
-            res.status(500).json({ message: "Comment Add failure" })
+            res.status(500).json({success: false, message: "Comment Add failure" })
         })
 })
 
 
-router.get('/post/fetch', function (req, res) {
+router.get('/post/fetch', playerAuth.verifyUser, function (req, res) {
     Post.find()
         .then(function (postData) {
-            res.status(200).json({ data: postData });
+            res.status(200).json({ success:true, data: postData });
         })
         .catch(function (error) {
             res.status(500).json({ message: error });
@@ -77,6 +78,22 @@ router.get('/post/fetch/:id', function (req, res) {
     Post.findOne({ _id: id })
         .then(function (postData) {
             res.status(200).json({ success: true, data: postData });
+        })
+        .catch(function (error) {
+            res.status(500).json({ message: error })
+            console.log(error)
+        })
+})
+
+
+router.get('/post/comments/:id', function (req, res) {
+    const id = req.params.id
+    Post.findOne({ _id: id })
+        .then(function (postData) {
+            
+                const comments = postData.comments
+                res.status(200).json({ success: true, data: comments });
+            
         })
         .catch(function (error) {
             res.status(500).json({ message: error })
