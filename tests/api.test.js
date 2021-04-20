@@ -27,7 +27,7 @@ describe('Futsal schema test anything', () =>{
     });
 
     it('to test the delete futsal is working or not', async() =>{
-        const status = await Futsal.deleteOne({_id: Object('607ef0a9f6716aacb66cfd07')});
+        const status = await Futsal.deleteOne({_id: Object('607ef0af1a9f30acd59f0320')});
         expect(status.ok).toBe(1)
     })
 
