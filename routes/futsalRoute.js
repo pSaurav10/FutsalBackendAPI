@@ -110,14 +110,11 @@ router.put('/futsaladmin/update', playerAuth.verifyUser, playerAuth.verifyAdmin,
     
     var objectid = require('mongodb').ObjectID;
     const approve = req.body.approve;
-    console.log(typeof approve)
     const id = objectid(req.body._id);
-    console.log(id)
     Futsal.updateOne({ _id: id }, {
         approve: approve
     })
         .then(function (result) {
-            console.log(result)
             res.status(200).json({result, message: "Futsal Updated" })
         })
         .catch(function (err) {

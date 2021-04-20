@@ -87,4 +87,18 @@ router.put('/event/update', function (req, res) {
             res.status(500).json({ message: "Event Update failure" })
         })
 });
+
+router.put('/eventadmin/update', function (req, res) {
+    
+    const id = req.body.id;
+    const approve = req.body.approve;
+    Event.updateOne({_id: id},{approve: approve})
+        .then(function (result) {
+            res.status(200).json({ message: "Event Updated" })
+            console.log(result)
+        })
+        .catch(function (err) {
+            res.status(500).json({ message: "Event Update failure" })
+        })
+});
 module.exports = router;
