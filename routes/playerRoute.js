@@ -8,11 +8,15 @@ const jwt = require('jsonwebtoken');
 const upload = require('../middleware/imgUpload')
 
 //player register
-router.post('/player/register',  function (req, res) {
+router.post('/player/register', [
+    check('fname', 'First Name is required!').not().isEmpty(),
+    check('username', 'Username is required!').not().isEmpty(),
+    check('password', 'Password is required!').not().isEmpty(),
+    check('email', 'Email is required!').not().isEmpty(),
+    check('email', 'It is not valid Email!').isEmail(),
+], function (req, res) {
     const errors = validationResult(req)
-    console.log(req.file)
-    
-        
+    if (errors.isEmpty()) {
         const fname = req.body.fname;
         const lname = req.body.lname;
         const username = req.body.username;
@@ -21,10 +25,11 @@ router.post('/player/register',  function (req, res) {
         const address = req.body.address;
         const phone = req.body.phone;
         const email = req.body.email;
+        const age = req.body.age;
         bcryptjs.hash(password, 10, function (err, hash) {
             const data = new Player({
                 fname: fname, lname: lname, username: username,
-                password: hash, userType: userType, address: address, phone: phone, email: email
+                password: hash, userType: userType, address: address, phone: phone, email: email, age: age
             })
             data.save()
                 .then(function (result) {
@@ -34,17 +39,10 @@ router.post('/player/register',  function (req, res) {
                     res.status(500).json({ message: e })
                 })
         })
-    //     if (errors.isEmpty()) { }
-    // else {
-    //     [
-    //         check('fname', 'First Name is required!').not().isEmpty(),
-    //         check('username', 'Username is required!').not().isEmpty(),
-    //         check('password', 'Password is required!').not().isEmpty(),
-    //         check('email', 'Email is required!').not().isEmpty(),
-    //         check('email', 'It is not valid Email!').isEmail(),
-    //     ],
-    //     res.status(400).json({error:"whatatat"})
-    // }
+    }
+    else {
+        res.status(400).json( errors.arrays())
+    }
 })
 //end of player register
 
@@ -63,8 +61,8 @@ router.post('/player/login', function (req, res) {
                 }
                 //token
                 const token = jwt.sign({ uid: playerData._id }, 'secretKey');
-                res.status(200).json({ success: true, token: token, data: playerData, message: "Authentication Success" })
-
+                res.status(200).json({ success: true, token: token, data: playerData, message: "Authentication Success", userType: playerData.userType })
+                
             })
         }).catch(function (e) {
             res.status(500).json({ message: e })
@@ -84,14 +82,13 @@ router.get('/profile', playerAuth.verifyUser, function (req, res) {
 router.put('/profile/update', playerAuth.verifyUser, function (req, res) {
     const fname = req.body.fname;
     const lname = req.body.lname;
-    const username = req.body.username;
     const address = req.body.address;
     const phone = req.body.phone;
     const email = req.body.email;
     const age = req.body.age;
     const id = req.user._id;
     Player.updateOne({ _id: id }, {
-        fname: fname, lname: lname, username: username,
+        fname: fname, lname: lname,
         address: address, phone: phone, email: email,
         age: age
     })
@@ -103,17 +100,17 @@ router.put('/profile/update', playerAuth.verifyUser, function (req, res) {
         })
 })
 
-router.put('/profile/photo/:id', upload.single('imagepp'),playerAuth.verifyUser,function(req, res){
-    
+router.put('/profile/photo/:id', upload.single('imagepp'), playerAuth.verifyUser, function (req, res) {
+
     const imagepp = req.file.filename;
     const id = req.params.id;
     Player.findByIdAndUpdate(id, {
         imagepp: imagepp
-    }).then(function (result){
-        res.status(200).json({success: true, data: imagepp})
-    }).catch(function (err){
-        res.status(200).json({success: false})
+    }).then(function (result) {
+        res.status(200).json({ success: true, data: imagepp })
+    }).catch(function (err) {
+        res.status(200).json({ success: false })
     })
-} )
+})
 
 module.exports = router

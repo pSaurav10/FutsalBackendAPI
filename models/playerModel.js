@@ -18,6 +18,9 @@ const Player = mongoose.model('Player',{
         type: String,
         require: true
     },
+    userType:{
+        type: String,
+    },
     address: {
         type: String
     },
@@ -29,7 +32,7 @@ const Player = mongoose.model('Player',{
         require: true
     },
     age: {
-        type: String,
+        type: Number,
     },
     imagepp:{
         type: String,

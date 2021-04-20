@@ -41,7 +41,7 @@ router.post('/futsal/register', playerAuth.verifyUser, upload.single('image'), f
 router.get('/futsal/fetch', function (req, res) {
     Futsal.find()
         .then(function (futsalData) {
-            res.status(200).json({ success:true, data: futsalData });
+            res.status(200).json({ success:true, data: futsalData, count: futsalData.length });
         })
         .catch(function (error) {
             res.status(500).json({ success:false, message: error });
@@ -64,7 +64,6 @@ router.get('/futsal/fetch/:id', function (req, res) {
     Futsal.findOne({ _id: id })
         .then(function (futsaldata) {
             res.status(200).json({ success: true, data: futsaldata });
-            console.log(futsaldata)
         })
         .catch(function (error) {
             res.status(500).json({ message: error })
@@ -100,6 +99,26 @@ router.put('/futsal/update',  playerAuth.verifyUser, function (req, res) {
     })
         .then(function (result) {
             res.status(200).json({ message: "Futsal Updated" })
+        })
+        .catch(function (err) {
+            res.status(500).json({ message: "Update failure" })
+        })
+})
+
+
+router.put('/futsaladmin/update', playerAuth.verifyUser, playerAuth.verifyAdmin, function (req, res) {
+    
+    var objectid = require('mongodb').ObjectID;
+    const approve = req.body.approve;
+    console.log(typeof approve)
+    const id = objectid(req.body._id);
+    console.log(id)
+    Futsal.updateOne({ _id: id }, {
+        approve: approve
+    })
+        .then(function (result) {
+            console.log(result)
+            res.status(200).json({result, message: "Futsal Updated" })
         })
         .catch(function (err) {
             res.status(500).json({ message: "Update failure" })

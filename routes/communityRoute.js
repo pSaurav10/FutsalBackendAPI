@@ -11,8 +11,6 @@ router.post('/post/add', playerAuth.verifyUser, [
 ], function (req, res) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
-
-        console.log(req.body)
         const post = req.body.post;
         const username = req.user.username;
         const userimage = req.user.imagepp;

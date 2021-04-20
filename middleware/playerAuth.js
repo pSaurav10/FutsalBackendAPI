@@ -22,18 +22,6 @@ catch(e){
 }
 
 
-//Futsal Owner Guard
-module.exports.verifyOwner = function (req, res, next){
-    if(!req.user){
-        return res.status(401).json({message: 'Authentication Failed'})
-    }
-    else if(req.user.userType!== "Owner"){
-        return res.status(401).json({message: "Permission Denied"})
-    }
-    next();
-}
-
-
 //Admin Guard
 module.exports.verifyAdmin = function (req, res, next){
     if(!req.user){
@@ -41,17 +29,6 @@ module.exports.verifyAdmin = function (req, res, next){
         return res.status(401).json({message: 'Authentication Failed'})
     }
     else if(req.user.userType!== "Admin"){
-        return res.status(401).json({message: "Permission Denied"})
-    }
-    next();
-}
-
-//Player Guard
-module.exports.verifyPlayer = function (req, res, next){
-    if(!req.user){
-        return res.status(401).json({message: 'Authentication Failed'})
-    }
-    else if(req.user.userType!== "Player"){
         return res.status(401).json({message: "Permission Denied"})
     }
     next();
