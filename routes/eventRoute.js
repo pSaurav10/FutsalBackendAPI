@@ -95,7 +95,6 @@ router.put('/eventadmin/update', function (req, res) {
     Event.updateOne({_id: id},{approve: approve})
         .then(function (result) {
             res.status(200).json({ message: "Event Updated" })
-            console.log(result)
         })
         .catch(function (err) {
             res.status(500).json({ message: "Event Update failure" })
